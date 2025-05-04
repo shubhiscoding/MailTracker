@@ -5,12 +5,13 @@ const axios = require('axios');
 const app = express();
 
 const BOT_TOKEN = process.env.BOT_TOKEN;
-const CHAT_ID = process.env.CHAT_ID;
+const CHAT_ID1 = process.env.CHAT_ID;
+const CHAT_ID2 = process.env.CHAT_ID_2;
 
-async function sendTelegramMessage(message) {
+async function sendTelegramMessage(message, chat_id) {
     const telegramUrl = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
     await axios.post(telegramUrl, {
-        chat_id: CHAT_ID,
+        chat_id: chat_id,
         text: message,
     });
 }
@@ -23,17 +24,18 @@ app.get('/track-open', async (req, res) => {
     console.log(logMessage);
 
     try {
-        await sendTelegramMessage(logMessage);
+        await sendTelegramMessage(logMessage, CHAT_ID1);
+        await sendTelegramMessage(logMessage, CHAT_ID2);
+        console.log('Telegram message sent successfully');
     } catch (err) {
         console.error('Telegram message failed:', err.message);
     }
 
-    const pixel = Buffer.from(
-        'R0lGODlhAQABAPAAAAAAAAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==',
-        'base64'
-    );
-    res.setHeader('Content-Type', 'image/gif');
-    res.send(pixel);
+    const imageUrl = 'https://mail-check.tech/MailCheck.png';
+    const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+
+    res.setHeader('Content-Type', 'image/png');
+    res.send(response.data);
 });
 
 app.listen(3000, () => {
