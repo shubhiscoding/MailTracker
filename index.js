@@ -27,15 +27,16 @@ app.get('/track-open', async (req, res) => {
         await sendTelegramMessage(logMessage, CHAT_ID1);
         await sendTelegramMessage(logMessage, CHAT_ID2);
         console.log('Telegram message sent successfully');
+
+        const imageUrl = 'https://mail-check.tech/MailCheck.png';
+        const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+    
+        res.setHeader('Content-Type', 'image/png');
+        res.send(response.data);
     } catch (err) {
-        console.error('Telegram message failed:', err.message);
+        console.error('Error:', err.message);
+        res.status(500).send('Something went wrong');
     }
-
-    const imageUrl = 'https://mail-check.tech/MailCheck.png';
-    const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
-
-    res.setHeader('Content-Type', 'image/png');
-    res.send(response.data);
 });
 
 app.listen(3000, () => {
