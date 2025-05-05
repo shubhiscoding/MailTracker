@@ -54,7 +54,7 @@ app.get('/track-clicks', async (req, res) => {
         console.error('Error:', err.message);
         res.status(500).send('Something went wrong');
     }
-    res.redirect('https://mail-check.tech/sign-up');
+    res.redirect('https://mail-check.tech');
 });
 
 app.listen(3000, () => {
