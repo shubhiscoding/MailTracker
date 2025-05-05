@@ -39,6 +39,24 @@ app.get('/track-open', async (req, res) => {
     }
 });
 
+app.get('/track-clicks', async (req, res) => {
+    const userEmail = req.query.email;
+    const timestamp = new Date().toISOString();
+
+    const logMessage = `📧 Email opened by: ${userEmail}\n🕒 Time: ${timestamp}`;
+    console.log(logMessage);
+
+    try {
+        await sendTelegramMessage(logMessage, CHAT_ID1);
+        await sendTelegramMessage(logMessage, CHAT_ID2);
+        console.log('Telegram message sent successfully');
+    } catch (err) {
+        console.error('Error:', err.message);
+        res.status(500).send('Something went wrong');
+    }
+    res.redirect('https://mail-check.tech/sign-up');
+});
+
 app.listen(3000, () => {
     console.log('Server running on http://localhost:3000');
 });
