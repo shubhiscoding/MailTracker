@@ -43,7 +43,7 @@ app.get('/track-clicks', async (req, res) => {
     const userEmail = req.query.email;
     const timestamp = new Date().toISOString();
 
-    const logMessage = `📧 Email opened by: ${userEmail}\n🕒 Time: ${timestamp}`;
+    const logMessage = `📧 Clicked for free trial by: ${userEmail}\n🕒 Time: ${timestamp}`;
     console.log(logMessage);
 
     try {
